@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lieder erkennen (Klassik Charts 2)</title>
+
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <a href="/">Klassik Charts 2</a>
+    <h1>Lieder Erkennen (Klassik Charts 1)</h1>
+    <div id="start">
+        <button type="button" id="startButton">Klicke hier um anzufangen</button>
+    </div>
+    <div id="hoeren" class="hidden">
+        <p id="playbackStatus">
+
+        </p>
+        <label for="titel">Name</label>
+        <input type="text" name="titel" id="titel">
+        <label for="kuenstler">Künstler</label>
+        <input type="text" name="kuenstler" id="kuenstler">
+        <br/>
+        <label for="epoche">Epoche</label>
+        <input type="text" name="epoche" id="epoche">
+        <br/>
+        <button type="button" id="abgeben">Abgeben</button>
+    </div>
+    <div id="resultat" class="hidden">
+        <h2>Ergebnisse</h3>
+        <h3>Titel des Liedes</h3>
+        <p id="liedtitel"></p>
+        <h3>Künstler des Liedes</h3>
+        <p id="liedkuenstler"></p>
+        <h3>Epoche des Künstlers/Liedes</h3>
+        <p id="liedepoche"></p>
+        <button id="neuesLied">Neues Lied erkennen</button>
+    </div>
+
+    <audio preload id="ungarischerTanz" class="hidden" src="/Brahms Ungarischer Tanz Nr.5.mp3"></audio>
+    <audio preload id="hallelujah" class="hidden" src="/Handel's 'Hallelujah!' Chorus .mp3"></audio>
+    <audio preload id="eineKleineNachtmusik" class="hidden" src="/Kleine Nachtmusik Mozart.mp3"></audio>
+    <audio preload id="landOfHopeAndGlory" class="hidden" src="/Land of Hope and Glory.mp3"></audio>
+    <audio preload id="hochzeitsMarsch" class="hidden" src="/Mendelssohn- Wedding March.mp3"></audio>
+    <audio preload id="canCanMusik" class="hidden" src="/Offenbach - Can Can Music.mp3"></audio>
+    <audio preload id="kanonInD" class="hidden" src="/Pachelbel Canon in D Major.mp3"></audio>
+    <audio preload id="ouvertuere" class="hidden" src="/Rossini- William Tell Overture- Final.mp3"></audio>
+    <audio preload id="klavierKonzertInB" class="hidden" src="/TSCHAIKOWSKY KLAVIERKONZERT NR 1 IN B MOLL OP 23.mp3"></audio>
+    <audio preload id="fruehling" class="hidden" src="/Vivaldi Spring (1st movement).mp3"></audio>
+
+    <script>
+        //const ungarischerTanz = document.getElementById("ungarischerTanz")
+        //ungarischerTanz.load()
+        const playbackStatus = document.getElementById("playbackStatus")
+        const start = document.getElementById("start")
+        const hoeren = document.getElementById("hoeren")
+        const resultat = document.getElementById("resultat")
+        let lieder = [
+            {
+                name: "Ungarischer Tanz Nr.5",
+                elementId: "ungarischerTanz",
+                element: null,
+                kuenstler: "Johannes Brahms",
+                epoche: "Romantik"
+            },
+            {
+                name: "Aus Messias: Hallelujah Chor",
+                elementId: "hallelujah",
+                element: null,
+                kuenstler: "Georg Friedrich Händel",
+                epoche: "Barock"
+            },
+            {
+                name: "Eine kleine Nachtmusik",
+                elementId: "eineKleineNachtmusik",
+                element: null,
+                kuenstler: "Wolfgang Amadeus Mozart",
+                epoche: "Klassik"
+            },
+            {
+                name: "Aus Pomp and Circumstances: Land of Hope and Glory",
+                elementId: "landOfHopeAndGlory",
+                element: null,
+                kuenstler: "Edward Elgar",
+                epoche: "Romantik"
+            },
+            {
+                name: "Aus Sommernachtstraum: Hochzeitsmarsch",
+                elementId: "hochzeitsMarsch",
+                element: null,
+                kuenstler: "Felix Mendelssohn",
+                epoche: "Romantik"
+            },
+            {
+                name: "Aus Hoffmanns Erzählungen: Can Can Musik",
+                elementId: "canCanMusik",
+                element: null,
+                kuenstler: "Jacques Offenbach",
+                epoche: "Romantik"
+            },
+            {
+                name: "Kanon in D",
+                elementId: "kanonInD",
+                element: null,
+                kuenstler: "Johann Pachelbel",
+                epoche: "Barock"
+            },
+            {
+                name: "Aus Willhelm Tell: Ouvertüre",
+                elementId: "ouvertuere",
+                element: null,
+                kuenstler: "Gioachino Rossini",
+                epoche: "Romantik"
+            },
+            {
+                name: "Klavierkonzert Nr. 1 in B Moll",
+                elementId: "klavierKonzertInB",
+                element: null,
+                kuenstler: "Pjotr Iljitsch Tschaikowski",
+                epoche: "Romantik"
+            },
+            {
+                name: "Aus Vier Jahreszeiten: Der Frühling",
+                elementId: "fruehling",
+                element: null,
+                kuenstler: "Antonio Vivaldi",
+                epoche: "Barock"
+            },
+        ]
+        
+        lieder.forEach(lied => {
+            lied["element"] = document.getElementById(lied["elementId"])
+        });
+
+        const startButton = document.getElementById("startButton")
+        const abgebenButton = document.getElementById("abgeben")
+        const kuenstler = document.getElementById("kuenstler")
+        const epoche = document.getElementById("epoche")
+        const titelInputElement = document.getElementById("titel")
+        let sollteLiedSpielen = false
+        let jetzigesLied = null
+        let interval = null
+        function startErkennung(){
+            start.classList.add("hidden")
+            hoeren.classList.remove("hidden")
+            resultat.classList.add("hidden")
+
+            jetzigesLied = lieder[Math.floor((Math.random() * lieder.length))]
+            sollteLiedSpielen = true
+            jetzigesLied["element"].play()
+            
+                interval = setInterval(() => {
+                    playbackStatus.innerText = Math.floor(jetzigesLied["element"].currentTime * 100) / 100 +"s/45s"
+
+                    if(jetzigesLied["element"].currentTime > 45){
+                        jetzigesLied["element"].pause()
+                        jetzigesLied["element"].currentTime = 0
+                        clearInterval(interval)
+                        interval = null
+                    }
+                }, 10)
+                
+        }
+
+        function abgeben(){
+            if(jetzigesLied["element"].currentTime > 0){
+                clearInterval(interval)
+                interval = null
+                jetzigesLied["element"].pause()
+                jetzigesLied["element"].currentTime = 0
+            }
+            
+            hoeren.classList.add("hidden")
+            let kuenstlerInput = kuenstler.value
+            let epocheInput = epoche.value
+            let titelInput = titelInputElement.value
+
+            kuenstler.value = ""
+            epoche.value = ""
+            titelInputElement.value = ""
+
+            let kuenstlerResultatText = document.getElementById("liedkuenstler")
+            let titelResultatText = document.getElementById("liedtitel")
+            let epocheResultatText = document.getElementById("liedepoche")
+
+            if(titelInput == jetzigesLied["name"]){
+                titelResultatText.innerText = "Korrekt (Deine Antwort: "+ titelInput +", Lösung: " + jetzigesLied["name"] + ")"
+            } else {
+                titelResultatText.innerText = "Falsch (Deine Antwort: "+ titelInput +", Lösung: " + jetzigesLied["name"] + ")"
+            }
+            if(kuenstlerInput == jetzigesLied["kuenstler"]){
+                kuenstlerResultatText.innerText = "Korrekt (Deine Antwort: "+ kuenstlerInput +", Lösung: " + jetzigesLied["kuenstler"] + ")"
+            } else {
+                kuenstlerResultatText.innerText = "Falsch (Deine Antwort: "+ kuenstlerInput +", Lösung: " + jetzigesLied["kuenstler"] + ")"
+            }
+            if(epocheInput == jetzigesLied["epoche"]){
+                epocheResultatText.innerText = "Korrekt (Deine Antwort: "+ epocheInput +", Lösung: " + jetzigesLied["epoche"] + ")"
+            } else {
+                epocheResultatText.innerText = "Falsch (Deine Antwort: "+ epocheInput +", Lösung: " + jetzigesLied["epoche"] + ")"
+            }
+
+            resultat.classList.remove("hidden")
+        }
+
+        abgebenButton.onclick = abgeben
+        document.getElementById("neuesLied").onclick = startErkennung
+        startButton.onclick = startErkennung
+    </script>
+</body>
+</html>

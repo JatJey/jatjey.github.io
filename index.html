@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lieder erkennen</title>
+    <title>Lieder erkennen (Klassik Charts 2)</title>
 
     <style>
         .hidden {
@@ -12,7 +12,8 @@
     </style>
 </head>
 <body>
-    <h1>Lieder Erkennen :)</h1>
+    <a href="/charts1.html">Klassik Charts 1</a>
+    <h1>Lieder Erkennen (Klassik Charts 2)</h1>
     <div id="start">
         <button type="button" id="startButton">Klicke hier um anzufangen</button>
     </div>
@@ -41,16 +42,16 @@
         <button id="neuesLied">Neues Lied erkennen</button>
     </div>
 
-    <audio preload id="ungarischerTanz" class="hidden" src="/Brahms Ungarischer Tanz Nr.5.mp3"></audio>
-    <audio preload id="hallelujah" class="hidden" src="/Handel's 'Hallelujah!' Chorus .mp3"></audio>
-    <audio preload id="eineKleineNachtmusik" class="hidden" src="/Kleine Nachtmusik Mozart.mp3"></audio>
-    <audio preload id="landOfHopeAndGlory" class="hidden" src="/Land of Hope and Glory.mp3"></audio>
-    <audio preload id="hochzeitsMarsch" class="hidden" src="/Mendelssohn- Wedding March.mp3"></audio>
-    <audio preload id="canCanMusik" class="hidden" src="/Offenbach - Can Can Music.mp3"></audio>
-    <audio preload id="kanonInD" class="hidden" src="/Pachelbel Canon in D Major.mp3"></audio>
-    <audio preload id="ouvertuere" class="hidden" src="/Rossini- William Tell Overture- Final.mp3"></audio>
-    <audio preload id="klavierKonzertInB" class="hidden" src="/TSCHAIKOWSKY KLAVIERKONZERT NR 1 IN B MOLL OP 23.mp3"></audio>
-    <audio preload id="fruehling" class="hidden" src="/Vivaldi Spring (1st movement).mp3"></audio>
+    <audio preload id="habanera" class="hidden" src="/Bizet Habanera.mp3"></audio>
+    <audio preload id="sinfonie" class="hidden" src="/Beethoven 5. Sinfonie.mp3"></audio>
+    <audio preload id="tedeum" class="hidden" src="/Charpentier Te Deum.mp3"></audio>
+    <audio preload id="bergkoenig" class="hidden" src="/Grieg in der Halle des Bergkoenigs.mp3"></audio>
+    <audio preload id="walzer" class="hidden" src="/Dmitri Shostakovich Walzer 2.mp3"></audio>
+    <audio preload id="sabre" class="hidden" src="/Khatchaturian Sabre Dance.mp3"></audio>
+    <audio preload id="starwars" class="hidden" src="/John Williams Star Wars .mp3"></audio>
+    <audio preload id="flowerduet" class="hidden" src="/Leo Delibes Lakme Flower Duett.mp3"></audio>
+    <audio preload id="zarathustra" class="hidden" src="/Strauss Also sprach Zarathustra.mp3"></audio>
+    <audio preload id="gefangenchor" class="hidden" src="/Verdi Va Pensiero Gefangenenchor.mp3"></audio>
 
     <script>
         //const ungarischerTanz = document.getElementById("ungarischerTanz")
@@ -61,74 +62,74 @@
         const resultat = document.getElementById("resultat")
         let lieder = [
             {
-                name: "Ungarischer Tanz Nr.5",
-                elementId: "ungarischerTanz",
+                name: "Habanera aus der Oper Carmen",
+                elementId: "habanera",
                 element: null,
-                kuenstler: "Johannes Brahms",
+                kuenstler: "Georges Bizet",
                 epoche: "Romantik"
             },
             {
-                name: "Aus Messias: Hallelujah Chor",
-                elementId: "hallelujah",
+                name: "5. Sinfonie 1. Satz",
+                elementId: "sinfonie",
                 element: null,
-                kuenstler: "Georg Friedrich Händel",
-                epoche: "Barock"
-            },
-            {
-                name: "Eine kleine Nachtmusik",
-                elementId: "eineKleineNachtmusik",
-                element: null,
-                kuenstler: "Wolfgang Amadeus Mozart",
+                kuenstler: "Ludwig van Beethoven",
                 epoche: "Klassik"
             },
             {
-                name: "Aus Pomp and Circumstances: Land of Hope and Glory",
-                elementId: "landOfHopeAndGlory",
+                name: "Te Deum",
+                elementId: "tedeum",
                 element: null,
-                kuenstler: "Edward Elgar",
-                epoche: "Romantik"
-            },
-            {
-                name: "Aus Sommernachtstraum: Hochzeitsmarsch",
-                elementId: "hochzeitsMarsch",
-                element: null,
-                kuenstler: "Felix Mendelssohn",
-                epoche: "Romantik"
-            },
-            {
-                name: "Aus Hoffmanns Erzählungen: Can Can Musik",
-                elementId: "canCanMusik",
-                element: null,
-                kuenstler: "Jacques Offenbach",
-                epoche: "Romantik"
-            },
-            {
-                name: "Kanon in D",
-                elementId: "kanonInD",
-                element: null,
-                kuenstler: "Johann Pachelbel",
+                kuenstler: "Marc-Antoine Charpentier",
                 epoche: "Barock"
             },
             {
-                name: "Aus Willhelm Tell: Ouvertüre",
-                elementId: "ouvertuere",
+                name: "Aus Peer Gynt: In der Halle des Bergkönigs",
+                elementId: "bergkoenig",
                 element: null,
-                kuenstler: "Gioachino Rossini",
+                kuenstler: "Edvard Grieg",
                 epoche: "Romantik"
             },
             {
-                name: "Klavierkonzert Nr. 1 in B Moll",
-                elementId: "klavierKonzertInB",
+                name: "Walzer Nr. 2",
+                elementId: "walzer",
                 element: null,
-                kuenstler: "Pjotr Iljitsch Tschaikowski",
+                kuenstler: "Dmitri Schastakowitsch",
+                epoche: "Moderne"
+            },
+            {
+                name: "Sabre Dance",
+                elementId: "sabre",
+                element: null,
+                kuenstler: "Aram Khachaturian",
+                epoche: "Moderne"
+            },
+            {
+                name: "Star Wars",
+                elementId: "starwars",
+                element: null,
+                kuenstler: "John Williams",
+                epoche: "Moderne"
+            },
+            {
+                name: "Aus der Oper Lakme: Flower Duett",
+                elementId: "flowerduet",
+                element: null,
+                kuenstler: "Léo Delibes",
                 epoche: "Romantik"
             },
             {
-                name: "Aus Vier Jahreszeiten: Der Frühling",
-                elementId: "fruehling",
+                name: "Also sprach Zarathustra",
+                elementId: "zarathustra",
                 element: null,
-                kuenstler: "Antonio Vivaldi",
-                epoche: "Barock"
+                kuenstler: "Richard Strauss",
+                epoche: "Romantik"
+            },
+            {
+                name: "Aus der Oper Nabucco: Gefangenchor",
+                elementId: "gefangenchor",
+                element: null,
+                kuenstler: "Giuseppe Verdi",
+                epoche: "Romantik"
             },
         ]
         

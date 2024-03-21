@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lieder erkennen (Klassik Charts 2)</title>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
     <style>
         .hidden {
             display: none;
@@ -12,36 +14,42 @@
     </style>
 </head>
 <body>
-    <a href="/charts1.html">Klassik Charts 1</a>
-    <h1>Lieder Erkennen (Klassik Charts 2)</h1>
-    <div id="start">
-        <button type="button" id="startButton">Klicke hier um anzufangen</button>
-    </div>
-    <div id="hoeren" class="hidden">
-        <p id="playbackStatus">
+    <div class="container">
+        <a href="/charts1.html">Klassik Charts 1</a>
+        <p class="title is-size-1">Lieder Erkennen (Klassik Charts 2)</p>
+        <div id="start">
+            <button class="button is-primary" type="button" id="startButton">Klicke hier um anzufangen</button>
+        </div>
+        <div id="hoeren" class="hidden">
+            <p class="is-size-3" id="playbackStatus">
 
-        </p>
-        <label for="titel">Name</label>
-        <input type="text" name="titel" id="titel">
-        <label for="kuenstler">Künstler</label>
-        <input type="text" name="kuenstler" id="kuenstler">
-        <br/>
-        <label for="epoche">Epoche</label>
-        <input type="text" name="epoche" id="epoche">
-        <br/>
-        <button type="button" id="abgeben">Abgeben</button>
+            </p>
+            <div class="field">
+                <label class="label" for="titel">Name</label>
+                <input class="input" type="text" name="titel" id="titel">
+            </div>
+            <div class="field">
+                <label class="label" for="kuenstler">Künstler</label>
+                <input class="input" type="text" name="kuenstler" id="kuenstler">
+            </div>
+            <div class="field">
+                <label class="label" for="epoche">Epoche</label>
+                <input class="input" type="text" name="epoche" id="epoche">
+            </div>
+            <br/>
+            <button class="button is-success" type="button" id="abgeben">Abgeben</button>
+        </div>
+        <div id="resultat" class="hidden">
+            <p class="title is-size-3">Ergebnisse</p>
+            <p class="title is-size-4">Titel des Liedes</p>
+            <p class="subtitle is-size-5" id="liedtitel"></p>
+            <p class="title is-size-4">Künstler des Liedes</p>
+            <p class="subtitle is-size-5" id="liedkuenstler"></p>
+            <p class="title is-size-4">Epoche des Künstlers/Liedes</p>
+            <p class="subtitle is-size-5" id="liedepoche"></p>
+            <button class="button is-primary" id="neuesLied">Neues Lied erkennen</button>
+        </div>
     </div>
-    <div id="resultat" class="hidden">
-        <h2>Ergebnisse</h3>
-        <h3>Titel des Liedes</h3>
-        <p id="liedtitel"></p>
-        <h3>Künstler des Liedes</h3>
-        <p id="liedkuenstler"></p>
-        <h3>Epoche des Künstlers/Liedes</h3>
-        <p id="liedepoche"></p>
-        <button id="neuesLied">Neues Lied erkennen</button>
-    </div>
-
     <audio preload id="habanera" class="hidden" src="/Bizet Habanera.mp3"></audio>
     <audio preload id="sinfonie" class="hidden" src="/Beethoven 5. Sinfonie.mp3"></audio>
     <audio preload id="tedeum" class="hidden" src="/Charpentier Te Deum.mp3"></audio>
@@ -54,8 +62,6 @@
     <audio preload id="gefangenenchor" class="hidden" src="/Verdi Va Pensiero Gefangenenchor.mp3"></audio>
 
     <script>
-        //const ungarischerTanz = document.getElementById("ungarischerTanz")
-        //ungarischerTanz.load()
         const playbackStatus = document.getElementById("playbackStatus")
         const start = document.getElementById("start")
         const hoeren = document.getElementById("hoeren")
@@ -137,6 +143,7 @@
             lied["element"] = document.getElementById(lied["elementId"])
         });
 
+
         const startButton = document.getElementById("startButton")
         const abgebenButton = document.getElementById("abgeben")
         const kuenstler = document.getElementById("kuenstler")
@@ -145,19 +152,39 @@
         let sollteLiedSpielen = false
         let jetzigesLied = null
         let interval = null
+
+        let randomLiedListe = []
+        function liedWaehlen(){
+            if(randomLiedListe.length == 0){
+                let schonInDerList = {}
+                while(randomLiedListe.length != lieder.length){
+                    let lied = lieder[Math.floor((Math.random() * lieder.length))]
+                    if(schonInDerList[lied["elementId"]] == null){
+                        schonInDerList[lied["elementId"]] = true
+                        randomLiedListe.push(lied)
+                    }
+                }
+                if(jetzigesLied != null && randomLiedListe[randomLiedListe.length - 1]["elementId"] == jetzigesLied["elementId"]){
+                    randomLiedListe.unshift(randomLiedListe.pop())
+                }
+            }
+            console.log(randomLiedListe)
+            return randomLiedListe.shift()
+        }
+
         function startErkennung(){
             start.classList.add("hidden")
             hoeren.classList.remove("hidden")
             resultat.classList.add("hidden")
 
-            jetzigesLied = lieder[Math.floor((Math.random() * lieder.length))]
+            jetzigesLied = liedWaehlen()
             sollteLiedSpielen = true
             jetzigesLied["element"].play()
             
                 interval = setInterval(() => {
-                    playbackStatus.innerText = Math.floor(jetzigesLied["element"].currentTime * 100) / 100 +"s/45s"
+                    playbackStatus.innerText = Math.floor(jetzigesLied["element"].currentTime * 100) / 100 +"s/60s"
 
-                    if(jetzigesLied["element"].currentTime > 45){
+                    if(jetzigesLied["element"].currentTime > 60){
                         jetzigesLied["element"].pause()
                         jetzigesLied["element"].currentTime = 0
                         clearInterval(interval)
@@ -210,6 +237,8 @@
         abgebenButton.onclick = abgeben
         document.getElementById("neuesLied").onclick = startErkennung
         startButton.onclick = startErkennung
+
+        console.log("Was machst du den hier? :)")
     </script>
 </body>
 </html>
